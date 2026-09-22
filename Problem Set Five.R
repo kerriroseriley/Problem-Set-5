@@ -1,13 +1,23 @@
 # Problem Set 5 Script
 
 install.packages("tidyverse")
+install.packages("expss")
+install.packages("haven")
+install.packages("foreign")
+
+
+library(foreign)
 library(tidyverse)
+library(expss)
+library(haven)
+
 
 # Q1: Use CCES/CES Cumulative file
-
+ces <- read_dta('~/Documents/PAI741/Problem Set 5/CES Data/cumulative.dta')
 
 # Q2: Use only 2024 data
-# Recode 5 categroy ideology variable to a three category: liberal, moderate, conservative
+ces2024 <- ces %>% filter(ces$year==2024)
+# Recode 5 category ideology variable to a three category: liberal, moderate, conservative
 
 
 # Q3 Recode presidential vote to look at just 2 party voye 
