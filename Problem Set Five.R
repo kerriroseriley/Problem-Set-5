@@ -46,7 +46,7 @@ ces2024$voted_pres_2
 
 
 # Q4 Table 
-
+table(ces2024$ideo5, ces2024$voted_pres_2)
 
 # What proportion of respondents who are liberal voted for Trump? 
 # What proportion of respondents who are conservative voted for Harris?
