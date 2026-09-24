@@ -1,15 +1,11 @@
 # Problem Set 5 Script
 
 install.packages("tidyverse")
-install.packages("expss")
-install.packages("haven")
-install.packages("foreign")
 
 
-library(foreign)
+library(dplyr)
 library(tidyverse)
-library(expss)
-library(haven)
+
 
 
 # Q1: Use CCES/CES Cumulative file
@@ -22,6 +18,7 @@ ces2024 <- ces %>% filter(ces$year==2024)
 
 # Q3 Recode presidential vote to look at just 2 party voye 
 # Other candidates to missing values
+
 
 # Q4 Table 
 
@@ -53,6 +50,6 @@ ces2024 <- ces %>% filter(ces$year==2024)
 # Q8 Table
 # What does education tell us about vote in the 2024 election.
 
-
+# Render your quarto file to .html and .pdf.
 
 
