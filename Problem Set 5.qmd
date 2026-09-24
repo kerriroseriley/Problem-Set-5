@@ -9,6 +9,7 @@ format:
 ```{r}
 # Load packages
 library(tidyverse)
+library(haven)
 
 # Read CES cumulative data
 ces <- read_dta("~/Documents/PAI741/Problem Set 5/CES Data/cumulative.dta")
