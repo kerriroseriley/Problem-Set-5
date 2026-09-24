@@ -9,7 +9,6 @@ format:
 ```{r}
 # Load packages
 library(tidyverse)
-library(haven)
 
 # Read CES cumulative data
 ces <- read_dta("~/Documents/PAI741/Problem Set 5/CES Data/cumulative.dta")
@@ -27,20 +26,22 @@ Use only the 2024 data. Recode the five-category ideology variable into three ca
 
 ```{r}
 # Keep only observations from 2024
-ces2024 <- ces |>
-  filter(year == 2024)
+ces2024 <- ces %>% filter(ces$year==2024)
 
 # Recode ideology
-ces2024 <- ces2024 |>
+ces2024$ideo5
+
+ces2024 <- ces2024|>
   mutate(ideo3 = case_when(
     ideo5 %in% 1:2 ~ 1,
-    ideo5 == 3 ~ 2,
+    ideo5 %in% 3 ~ 2,
     ideo5 %in% 4:5 ~ 3,
     ideo5 == 6 ~ NA
   ))
 
 # Check recode
-table(ces2024$ideo3, useNA = "ifany")
+ces2024$ideo3
+
 ```
 
 The new variable is coded as:
@@ -54,15 +55,19 @@ The new variable is coded as:
 Recode the presidential vote variable to include only the two-party vote. Respondents who voted for candidates other than Harris or Trump are coded as missing.
 
 ```{r}
+
+colnames(ces2024)
+ces2024$voted_pres_24
+
 ces2024 <- ces2024 |>
   mutate(voted_pres_2 = case_when(
-    voted_pres_24 == 1 ~ 1,
-    voted_pres_24 == 2 ~ 2,
+    voted_pres_24 %in% 1 ~ 1,
+    voted_pres_24 %in% 2 ~ 2,
     voted_pres_24 %in% 3:8 ~ NA
   ))
 
-# Check recode
-table(ces2024$voted_pres_2, useNA = "ifany")
+ces2024$voted_pres_2
+
 ```
 
 ## Question 4
@@ -74,16 +79,14 @@ Create a table comparing ideology and presidential vote.
 table(ces2024$ideo3, ces2024$voted_pres_2)
 
 # Row proportions
-prop.table(
-  table(ces2024$ideo3, ces2024$voted_pres_2),
-  margin = 1
-)
+prop.table(table(ces2024$ideo3, ces2024$voted_pres_2), margin = 1)
+
 ```
 
 ### What proportion of respondents who are liberal voted for Trump?
 
 ```{r}
-379 / (13541 + 379)
+379/(13541+379)
 ```
 
 Approximately **2.7% of liberal respondents voted for Trump**.
@@ -91,7 +94,7 @@ Approximately **2.7% of liberal respondents voted for Trump**.
 ### What proportion of respondents who are conservative voted for Harris?
 
 ```{r}
-999 / (999 + 12907)
+999/ (999+12907)
 ```
 
 Approximately **7.2% of conservative respondents voted for Harris**.
@@ -101,15 +104,16 @@ Approximately **7.2% of conservative respondents voted for Harris**.
 Find the variable that refers to whether respondents own or rent their home. Recode "Other" as missing.
 
 ```{r}
+ces2024$ownhome
+
 ces2024 <- ces2024 |>
   mutate(clean_ownhome = case_when(
-    ownhome == 1 ~ 1,
-    ownhome == 2 ~ 2,
+    ownhome %in% 1 ~ 1,
+    ownhome %in% 2 ~ 2,
     ownhome == 3 ~ NA
   ))
 
-# Check recode
-table(ces2024$clean_ownhome, useNA = "ifany")
+ces2024$clean_ownhome
 ```
 
 The new variable is coded as:
@@ -124,20 +128,16 @@ Create a table comparing homeownership and presidential vote.
 ```{r}
 table(ces2024$voted_pres_2, ces2024$clean_ownhome)
 
-# Column proportions
-prop.table(
-  table(ces2024$voted_pres_2, ces2024$clean_ownhome),
-  margin = 2
-)
 ```
 
 ### What proportion of people who owned their homes voted for Trump? Harris?
 
 ```{r}
-# Harris
+# Calculations for Proportion Questions
+# HO Trump
 14619 / (14619 + 13700)
 
-# Trump
+# HO Kamala 
 13700 / (14619 + 13700)
 ```
 
@@ -146,10 +146,10 @@ Approximately **51.6% of homeowners voted for Harris and 48.4% voted for Trump**
 ### What proportion of people who rented voted for Trump? Harris?
 
 ```{r}
-# Trump
+# Renters Trump
 4117 / (7593 + 4117)
 
-# Harris
+# Renters Harris
 7593 / (7593 + 4117)
 ```
 
@@ -165,16 +165,18 @@ Recode education into four categories:
 4. Postgraduate education
 
 ```{r}
+
+ces2024$educ
+
 ces2024 <- ces2024 |>
   mutate(educ_4 = case_when(
     educ %in% 1:2 ~ 1,
     educ %in% 3:4 ~ 2,
-    educ == 5 ~ 3,
-    educ == 6 ~ 4
+    educ %in% 5 ~ 3,
+    educ %in% 6 ~ 4
   ))
 
-# Check recode
-table(ces2024$educ, ces2024$educ_4)
+ces2024$educ_4
 ```
 
 ## Question 8
