@@ -46,9 +46,12 @@ ces2024$voted_pres_2
 
 
 # Q4 Table 
-table(ces2024$ideo5, ces2024$voted_pres_2)
+table(ces2024$ideo3, ces2024$voted_pres_2)
+prop.table(table(ces2024$ideo3, ces2024$voted_pres_2), margin = 1)
 
 # What proportion of respondents who are liberal voted for Trump? 
+379/
+
 # What proportion of respondents who are conservative voted for Harris?
 
 
