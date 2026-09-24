@@ -24,9 +24,18 @@ ces2024 <- ces2024|>
 
 ces2024$ideo3
 
-
 # Q3 Recode presidential vote to look at just 2 party vote 
 # Other candidates to missing values
+ces2024$pid3 
+ces2024 <- ces2024 |>
+  mutate(pid2 = case_when(
+    pid3 %in% 1 ~ 1,
+    pid3 %in% 2 ~ 2,
+    pid3 ==3 | pid3 == 4 | pid3 == 5 ~ NA
+  ))
+
+ces2024$pid2
+
 
 
 
