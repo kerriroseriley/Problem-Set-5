@@ -2,10 +2,8 @@
 
 install.packages("tidyverse")
 
-
 library(dplyr)
 library(tidyverse)
-
 
 
 # Q1: Use CCES/CES Cumulative file
@@ -15,9 +13,22 @@ ces <- read_dta('~/Documents/PAI741/Problem Set 5/CES Data/cumulative.dta')
 ces2024 <- ces %>% filter(ces$year==2024)
 # Recode 5 category ideology variable to a three category: liberal, moderate, conservative
 
+ces2024$ideo5
+ces2024 <- ces2024|>
+  mutate(ideo3 = case_when(
+    ideo5 %in% 1:2 ~ 1,
+    ideo5 %in% 3 ~ 2,
+    ideo5 %in% 4:5 ~ 3,
+    ideo5 == 6 ~ NA
+  ))
 
-# Q3 Recode presidential vote to look at just 2 party voye 
+ces2024$ideo3
+
+
+# Q3 Recode presidential vote to look at just 2 party vote 
 # Other candidates to missing values
+
+
 
 
 # Q4 Table 
