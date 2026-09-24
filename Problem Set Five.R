@@ -46,22 +46,34 @@ ces2024$voted_pres_2
 
 
 # Q4 Table 
+# Regular Table
 table(ces2024$ideo3, ces2024$voted_pres_2)
+
+# Shows the Proportions
 prop.table(table(ces2024$ideo3, ces2024$voted_pres_2), margin = 1)
 
+
 # What proportion of respondents who are liberal voted for Trump? 
-379/
+379/(13541+379)
+# 2.7% or 0.027 of respondents who are liberal, voted for Trump. 
 
 # What proportion of respondents who are conservative voted for Harris?
-
-
-
+999/ (999+12907)
+# 7.2 or 0.072 of respondents who are conservative vited for Kamala Harris. 
 
 # Q5 
 # Find the variable that refers to whether people own or rent their home.
+ces2024$ownhome
+
 # Recode the variable so that “other” is missing
-
-
+ces2024 <- ces2024 |>
+  mutate(clean_ownhome = case_when(
+    ownhome %in% 1 ~ 1,
+    ownhome %in% 2 ~ 2,
+    ownhome == 3 ~ NA
+  ))
+# Check
+ces2024$clean_ownhome
 
 # Q6 Table
 #  What portion of people who own their homes voted for Trump? Harris? 
