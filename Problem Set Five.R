@@ -79,23 +79,42 @@ ces2024$clean_ownhome
 table(ces2024$voted_pres_2, ces2024$clean_ownhome)
 
 # What portion of people who own their homes voted for Trump? Harris? 
-HO Trump
+# HO Trump
 14619 / (14619 + 13700)
-HO Kamala 
+# HO Kamala 
 13700 / (14619 + 13700)
 # 51% or 0.52 respondents who own homes, voted for Trump, and 48% voted for Kamala Harris.
 
 # What portion of people who rented voted for Trump? Harris?
+# Renters Trump
+4117 / (7593 + 4117)
+# Renters Harris
+7593 / (7593 + 4117)
+# About 35% of Trump voters rent, and 65% of Harris voters rent.
 
 # Q7 
 # locate education variable
+ces2024$educ
 # recode variable so those <= hs degree =1, 
 # some college<4 yrs = 2
 # college degree = 3, post-grad = 4
 
+ces2024 <- ces2024 |>
+  mutate(educ_4 = case_when(
+    educ %in% 1:2 ~ 1,  # HS degree or less
+    educ %in% 3:4 ~ 2,  # Some college, less than 4 years
+    educ %in% 5 ~ 3,  # College degree
+    educ %in% 6 ~ 4   # Post-grad
+  ))
+
+# Check recoding worked
+ces2024$educ_4
 
 # Q8 Table
+table(ces2024$voted_pres_2, ces2024$educ_4)
+
 # What does education tell us about vote in the 2024 election.
+# Education is associated with presidential vote choice in this sample. As education level increases, the proportion voting for Harris increases, while the proportion voting for Trump decreases. Trump received a larger share among respondents with a high school education or less, while Harris received a larger share among respondents with some college, a college degree, or postgraduate education. The difference was largest among respondents with postgraduate education.
 
 # Render your quarto file to .html and .pdf.
 
