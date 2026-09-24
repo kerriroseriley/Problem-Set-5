@@ -2,9 +2,195 @@
 title: "Problem Set 5"
 author: "Kerri Rose Riley"
 format:
-  html:
-    embed-resources: true 
-  docx: default
+  html: default
+  pdf: default
 ---
 
+```{r}
+# Load packages
+library(tidyverse)
+library(haven)
 
+# Read CES cumulative data
+ces <- read_dta("~/Documents/PAI741/Problem Set 5/CES Data/cumulative.dta")
+```
+
+## Question 1
+
+Use the CCES/CES Cumulative File.
+
+The CCES/CES cumulative dataset is used for this analysis.
+
+## Question 2
+
+Use only the 2024 data. Recode the five-category ideology variable into three categories: liberal, moderate, and conservative.
+
+```{r}
+# Keep only observations from 2024
+ces2024 <- ces |>
+  filter(year == 2024)
+
+# Recode ideology
+ces2024 <- ces2024 |>
+  mutate(ideo3 = case_when(
+    ideo5 %in% 1:2 ~ 1,
+    ideo5 == 3 ~ 2,
+    ideo5 %in% 4:5 ~ 3,
+    ideo5 == 6 ~ NA
+  ))
+
+# Check recode
+table(ces2024$ideo3, useNA = "ifany")
+```
+
+The new variable is coded as:
+
+1 = Liberal  
+2 = Moderate  
+3 = Conservative  
+
+## Question 3
+
+Recode the presidential vote variable to include only the two-party vote. Respondents who voted for candidates other than Harris or Trump are coded as missing.
+
+```{r}
+ces2024 <- ces2024 |>
+  mutate(voted_pres_2 = case_when(
+    voted_pres_24 == 1 ~ 1,
+    voted_pres_24 == 2 ~ 2,
+    voted_pres_24 %in% 3:8 ~ NA
+  ))
+
+# Check recode
+table(ces2024$voted_pres_2, useNA = "ifany")
+```
+
+## Question 4
+
+Create a table comparing ideology and presidential vote.
+
+```{r}
+# Frequency table
+table(ces2024$ideo3, ces2024$voted_pres_2)
+
+# Row proportions
+prop.table(
+  table(ces2024$ideo3, ces2024$voted_pres_2),
+  margin = 1
+)
+```
+
+### What proportion of respondents who are liberal voted for Trump?
+
+```{r}
+379 / (13541 + 379)
+```
+
+Approximately **2.7% of liberal respondents voted for Trump**.
+
+### What proportion of respondents who are conservative voted for Harris?
+
+```{r}
+999 / (999 + 12907)
+```
+
+Approximately **7.2% of conservative respondents voted for Harris**.
+
+## Question 5
+
+Find the variable that refers to whether respondents own or rent their home. Recode "Other" as missing.
+
+```{r}
+ces2024 <- ces2024 |>
+  mutate(clean_ownhome = case_when(
+    ownhome == 1 ~ 1,
+    ownhome == 2 ~ 2,
+    ownhome == 3 ~ NA
+  ))
+
+# Check recode
+table(ces2024$clean_ownhome, useNA = "ifany")
+```
+
+The new variable is coded as:
+
+1 = Own  
+2 = Rent  
+
+## Question 6
+
+Create a table comparing homeownership and presidential vote.
+
+```{r}
+table(ces2024$voted_pres_2, ces2024$clean_ownhome)
+
+# Column proportions
+prop.table(
+  table(ces2024$voted_pres_2, ces2024$clean_ownhome),
+  margin = 2
+)
+```
+
+### What proportion of people who owned their homes voted for Trump? Harris?
+
+```{r}
+# Harris
+14619 / (14619 + 13700)
+
+# Trump
+13700 / (14619 + 13700)
+```
+
+Approximately **51.6% of homeowners voted for Harris and 48.4% voted for Trump**.
+
+### What proportion of people who rented voted for Trump? Harris?
+
+```{r}
+# Trump
+4117 / (7593 + 4117)
+
+# Harris
+7593 / (7593 + 4117)
+```
+
+Approximately **35.2% of renters voted for Trump and 64.8% voted for Harris**.
+
+## Question 7
+
+Recode education into four categories:
+
+1. High school degree or less
+2. Some college or a two-year degree
+3. Four-year college degree
+4. Postgraduate education
+
+```{r}
+ces2024 <- ces2024 |>
+  mutate(educ_4 = case_when(
+    educ %in% 1:2 ~ 1,
+    educ %in% 3:4 ~ 2,
+    educ == 5 ~ 3,
+    educ == 6 ~ 4
+  ))
+
+# Check recode
+table(ces2024$educ, ces2024$educ_4)
+```
+
+## Question 8
+
+Create a table comparing education and presidential vote.
+
+```{r}
+table(ces2024$voted_pres_2, ces2024$educ_4)
+
+# Column proportions
+prop.table(
+  table(ces2024$voted_pres_2, ces2024$educ_4),
+  margin = 2
+)
+```
+
+### What does education tell us about vote in the 2024 election?
+
+In this sample, presidential vote choice varies across education categories. The proportion voting for Harris increases across the four education categories, while the proportion voting for Trump decreases. Trump received a larger share among respondents with a high school education or less, while Harris received a larger share among respondents with some college, a four-year college degree, or postgraduate education. The difference between the two candidates was largest among respondents with postgraduate education.

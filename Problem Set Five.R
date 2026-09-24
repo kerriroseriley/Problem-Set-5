@@ -1,4 +1,5 @@
 # Problem Set 5 Script
+# Author: Kerri Riley
 
 install.packages("tidyverse")
 
