@@ -76,9 +76,16 @@ ces2024 <- ces2024 |>
 ces2024$clean_ownhome
 
 # Q6 Table
-#  What portion of people who own their homes voted for Trump? Harris? 
-# What portion of people who rented voted for Trump? Harris?
+table(ces2024$voted_pres_2, ces2024$clean_ownhome)
 
+# What portion of people who own their homes voted for Trump? Harris? 
+HO Trump
+14619 / (14619 + 13700)
+HO Kamala 
+13700 / (14619 + 13700)
+# 51% or 0.52 respondents who own homes, voted for Trump, and 48% voted for Kamala Harris.
+
+# What portion of people who rented voted for Trump? Harris?
 
 # Q7 
 # locate education variable
